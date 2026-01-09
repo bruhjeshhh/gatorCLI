@@ -13,6 +13,6 @@ import (
 type User struct {
 	ID        uuid.UUID
 	CreatedAt sql.NullTime
-	UpdatesAt sql.NullTime
+	UpdatedAt sql.NullTime
 	Name      string
 }

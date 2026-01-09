@@ -1,18 +1,28 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
 
 	"github.com/bruhjeshhh/gatorCLI/internal/config"
+	"github.com/bruhjeshhh/gatorCLI/internal/database"
 	_ "github.com/lib/pq"
+	// "github.com/bruhjeshhh/gatorCLI/sql"
 )
 
 func main() {
 
 	resp, _ := config.Read()
-	s := state{
+	dbURL := resp.DbURL
+	db, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		log.Fatalf("cant connect")
+	}
+	dbQueries := database.New(db)
+	s := &state{
+		db:  dbQueries,
 		cfg: &resp,
 	}
 	appState := commands{
@@ -20,17 +30,24 @@ func main() {
 	}
 
 	appState.register("login", handlerLogin)
+	appState.register("register", handlerRegister)
 	params := os.Args
-	// fmt.Println(params[0])
-	fmt.Println(len(params))
+	fmt.Println(params[0])
+	fmt.Println(params[1])
+	fmt.Println(params[2])
+	// fmt.Println(len(params))
 	if len(params) < 3 {
 		log.Fatal("not enough args")
 	}
+
 	cmd := command{
 		name: params[1],
 		omfo: params[1:],
 	}
-	// fmt.Print(cmd, s)
-	appState.run(&s, cmd)
+
+	ersr := appState.run(s, cmd)
+	if ersr != nil {
+		fmt.Println("unknown error")
+	}
 
 }

@@ -2,7 +2,7 @@
 CREATE TABLE users(
 	id uuid primary key,
 	created_at timestamp,
-	updates_at timestamp,
+	updated_at timestamp,
 	name text unique not null
 );
 
