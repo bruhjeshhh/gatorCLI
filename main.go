@@ -47,7 +47,7 @@ func main() {
 
 	ersr := appState.run(s, cmd)
 	if ersr != nil {
-		fmt.Println("unknown error")
+		log.Fatal(ersr)
 	}
 
 }
