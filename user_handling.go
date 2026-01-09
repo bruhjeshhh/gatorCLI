@@ -88,3 +88,20 @@ func resetDb(s *state, cmd command) error {
 	fmt.Print("reset successful")
 	return nil
 }
+
+func getUsers(s *state, cmd command) error {
+	users, err := s.db.GetUsers(context.Background())
+
+	if err != nil {
+		return fmt.Errorf("query failed for sm reason uhuh")
+	}
+	currentuser := s.cfg.CurrentUserName
+	for _, user := range users {
+		if user == currentuser {
+			fmt.Println(user, "(current)")
+		} else {
+			fmt.Println(user)
+		}
+	}
+	return nil
+}

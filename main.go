@@ -31,6 +31,7 @@ func main() {
 	appState.register("login", handlerLogin)
 	appState.register("register", handlerRegister)
 	appState.register("reset", resetDb)
+	appState.register("users", getUsers)
 	params := os.Args
 	// fmt.Println(params[0])
 	// fmt.Println(params[1])
