@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
 
@@ -31,14 +30,15 @@ func main() {
 
 	appState.register("login", handlerLogin)
 	appState.register("register", handlerRegister)
+	appState.register("reset", resetDb)
 	params := os.Args
-	fmt.Println(params[0])
-	fmt.Println(params[1])
-	fmt.Println(params[2])
+	// fmt.Println(params[0])
+	// fmt.Println(params[1])
+	// fmt.Println(params[2])
 	// fmt.Println(len(params))
-	if len(params) < 3 {
-		log.Fatal("not enough args")
-	}
+	// if len(params) <  {
+	// 	log.Fatal("not enough args")
+	// }
 
 	cmd := command{
 		name: params[1],

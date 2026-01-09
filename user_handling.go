@@ -47,7 +47,7 @@ func handlerLogin(s *state, cmd command) error {
 }
 
 func handlerRegister(s *state, cmd command) error {
-	fmt.Println("About to run command...")
+	// fmt.Println("About to run command...")
 	if len(cmd.omfo) == 1 {
 		return errors.New("not enough args")
 	}
@@ -55,7 +55,7 @@ func handlerRegister(s *state, cmd command) error {
 	if err == nil {
 		log.Fatal("user already exists")
 	}
-	fmt.Println("About to craete...")
+	// fmt.Println("About to craete...")
 	user, errbr := s.db.CreateUser(context.Background(), database.CreateUserParams{
 		ID:        uuid.New(),
 		CreatedAt: timeConverter(time.Now().UTC()),
@@ -65,7 +65,7 @@ func handlerRegister(s *state, cmd command) error {
 	if errbr != nil {
 		return fmt.Errorf("couldn't create user: %w", errbr)
 	}
-	fmt.Println("created, now setting")
+	// fmt.Println("created, now setting")
 	s.cfg.SetUser(cmd.omfo[1])
 
 	fmt.Println("user was created:")
@@ -78,4 +78,13 @@ func timeConverter(t time.Time) sql.NullTime {
 		Time:  t,
 		Valid: true,
 	}
+}
+
+func resetDb(s *state, cmd command) error {
+	err := s.db.Reset(context.Background())
+	if err != nil {
+		return fmt.Errorf("couldnt reset")
+	}
+	fmt.Print("reset successful")
+	return nil
 }
