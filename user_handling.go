@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/bruhjeshhh/gatorCLI/internal/database"
+	"github.com/bruhjeshhh/gatorCLI/internal/rss"
 	"github.com/google/uuid"
 )
 
@@ -103,5 +104,13 @@ func getUsers(s *state, cmd command) error {
 			fmt.Println(user)
 		}
 	}
+	return nil
+}
+func fetchFeed(s *state, cmd command) error {
+	fetched, err := rss.FetchFeed(context.Background(), "https://www.wagslane.dev/index.xml")
+	if err != nil {
+		return fmt.Errorf("could not fetch %w", err)
+	}
+	fmt.Println(fetched)
 	return nil
 }

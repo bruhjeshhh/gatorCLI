@@ -27,11 +27,14 @@ func main() {
 	appState := commands{
 		commands: make(map[string]func(*state, command) error),
 	}
-
+	// fmt.Print(rss.FetchFeed(context.Background(), "https://www.wagslane.dev/index.xml"))
+	// log.Fatal()
 	appState.register("login", handlerLogin)
 	appState.register("register", handlerRegister)
 	appState.register("reset", resetDb)
 	appState.register("users", getUsers)
+	appState.register("agg", fetchFeed)
+	// appState.register("f")
 	params := os.Args
 	// fmt.Println(params[0])
 	// fmt.Println(params[1])
