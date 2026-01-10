@@ -106,11 +106,41 @@ func getUsers(s *state, cmd command) error {
 	}
 	return nil
 }
+
 func fetchFeed(s *state, cmd command) error {
-	fetched, err := rss.FetchFeed(context.Background(), "https://www.wagslane.dev/index.xml")
+	fmt.Print(cmd.omfo)
+	if len(cmd.omfo) != 3 {
+		return fmt.Errorf("not enough arguements")
+	}
+	_, err := rss.FetchFeed(context.Background(), "https://www.wagslane.dev/index.xml")
 	if err != nil {
 		return fmt.Errorf("could not fetch %w", err)
 	}
-	fmt.Println(fetched)
+
+	username := s.cfg.CurrentUserName
+	user, _ := s.db.GetUser(context.Background(), username)
+
+	_, erro := s.db.Feed_intoDb(context.Background(), database.Feed_intoDbParams{
+		ID:        uuid.New(),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
+		Name:      cmd.omfo[1],
+		Url:       cmd.omfo[2],
+		UserID:    user.ID,
+	})
+
+	if erro != nil {
+		return fmt.Errorf("db couldnt update %w", erro)
+	}
+	fmt.Println("done")
+	return nil
+}
+
+func fetchFeeds(s *state, cmd command) error {
+	feed, errrr := s.db.GetFeed(context.Background())
+	if errrr != nil {
+		return fmt.Errorf("couldnt fetch")
+	}
+	fmt.Println(feed)
 	return nil
 }

@@ -33,16 +33,10 @@ func main() {
 	appState.register("register", handlerRegister)
 	appState.register("reset", resetDb)
 	appState.register("users", getUsers)
-	appState.register("agg", fetchFeed)
-	// appState.register("f")
+	appState.register("addfeed", fetchFeed)
+	appState.register("feeds", fetchFeeds)
+
 	params := os.Args
-	// fmt.Println(params[0])
-	// fmt.Println(params[1])
-	// fmt.Println(params[2])
-	// fmt.Println(len(params))
-	// if len(params) <  {
-	// 	log.Fatal("not enough args")
-	// }
 
 	cmd := command{
 		name: params[1],
@@ -51,7 +45,7 @@ func main() {
 
 	ersr := appState.run(s, cmd)
 	if ersr != nil {
-		log.Fatal(ersr)
+		log.Fatal("error hui gya", ersr)
 	}
 
 }
