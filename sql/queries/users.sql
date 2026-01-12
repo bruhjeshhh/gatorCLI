@@ -10,6 +10,7 @@ WHERE name = $1;
 -- name: Reset :exec
 delete from users;
 delete from feeds;
+delete from feed_follows;
 
 -- name: GetUsers :many
 select name from users;

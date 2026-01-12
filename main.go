@@ -11,6 +11,11 @@ import (
 	// "github.com/bruhjeshhh/gatorCLI/sql"
 )
 
+type state struct {
+	db  *database.Queries
+	cfg *config.Config
+}
+
 func main() {
 
 	resp, _ := config.Read()
@@ -33,8 +38,10 @@ func main() {
 	appState.register("register", handlerRegister)
 	appState.register("reset", resetDb)
 	appState.register("users", getUsers)
-	appState.register("addfeed", fetchFeed)
+	appState.register("addfeed", addFeed)
 	appState.register("feeds", fetchFeeds)
+	appState.register("follow", addFollow)
+	appState.register("following", getfollwedfeedsby_User)
 
 	params := os.Args
 

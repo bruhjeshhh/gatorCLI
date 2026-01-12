@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/bruhjeshhh/gatorCLI/internal/database"
-	"github.com/bruhjeshhh/gatorCLI/internal/rss"
 	"github.com/google/uuid"
 )
 
@@ -21,7 +20,7 @@ func (c *commands) run(s *state, cmd command) error {
 	}
 	err := callback(s, cmd)
 	if err != nil {
-		return fmt.Errorf("the function did not execute ", err)
+		return fmt.Errorf("the function did not execute %w", err)
 	}
 	return nil
 }
@@ -104,43 +103,5 @@ func getUsers(s *state, cmd command) error {
 			fmt.Println(user)
 		}
 	}
-	return nil
-}
-
-func fetchFeed(s *state, cmd command) error {
-	fmt.Print(cmd.omfo)
-	if len(cmd.omfo) != 3 {
-		return fmt.Errorf("not enough arguements")
-	}
-	_, err := rss.FetchFeed(context.Background(), "https://www.wagslane.dev/index.xml")
-	if err != nil {
-		return fmt.Errorf("could not fetch %w", err)
-	}
-
-	username := s.cfg.CurrentUserName
-	user, _ := s.db.GetUser(context.Background(), username)
-
-	_, erro := s.db.Feed_intoDb(context.Background(), database.Feed_intoDbParams{
-		ID:        uuid.New(),
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
-		Name:      cmd.omfo[1],
-		Url:       cmd.omfo[2],
-		UserID:    user.ID,
-	})
-
-	if erro != nil {
-		return fmt.Errorf("db couldnt update %w", erro)
-	}
-	fmt.Println("done")
-	return nil
-}
-
-func fetchFeeds(s *state, cmd command) error {
-	feed, errrr := s.db.GetFeed(context.Background())
-	if errrr != nil {
-		return fmt.Errorf("couldnt fetch")
-	}
-	fmt.Println(feed)
 	return nil
 }
