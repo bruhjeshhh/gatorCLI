@@ -38,3 +38,8 @@ where url=$1;
 -- name: GetFeedFollowsForUser :many
 select feed_id from feed_follows where user_id=$1;
 
+
+-- name: UnfollowFeeds :exec
+delete from feed_follows where feed_id=$1 and user_id=$2;
+
+

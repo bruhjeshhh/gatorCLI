@@ -214,3 +214,17 @@ func (q *Queries) GetFeedby_Url(ctx context.Context, url string) (Feed, error) {
 	)
 	return i, err
 }
+
+const unfollowFeeds = `-- name: UnfollowFeeds :exec
+delete from feed_follows where feed_id=$1 and user_id=$2
+`
+
+type UnfollowFeedsParams struct {
+	FeedID uuid.UUID
+	UserID uuid.UUID
+}
+
+func (q *Queries) UnfollowFeeds(ctx context.Context, arg UnfollowFeedsParams) error {
+	_, err := q.db.ExecContext(ctx, unfollowFeeds, arg.FeedID, arg.UserID)
+	return err
+}

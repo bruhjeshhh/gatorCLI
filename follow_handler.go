@@ -40,7 +40,7 @@ func addFollow(s *state, cmd command) error {
 }
 
 func getfollwedfeedsby_User(s *state, cmd command) error {
-	fmt.Println("here1")
+	// fmt.Println("here1")
 	user, err := s.db.GetUser(context.Background(), s.cfg.CurrentUserName)
 	if err != nil {
 		return fmt.Errorf("couldnt fetch user id")
@@ -59,6 +59,31 @@ func getfollwedfeedsby_User(s *state, cmd command) error {
 			return fmt.Errorf("couldnt fetch feed name")
 		}
 		fmt.Println("yohooo", feed)
+	}
+	return nil
+}
+
+func unfollow(s *state, cmd command) error {
+
+	user, err := s.db.GetUser(context.Background(), s.cfg.CurrentUserName)
+	if err != nil {
+		return fmt.Errorf("couldnt fetch user id")
+	}
+	userid := user.ID
+
+	feed, erro := s.db.GetFeedby_Url(context.Background(), cmd.omfo[1])
+
+	if erro != nil {
+		return fmt.Errorf("couldnt fetch feed id")
+	}
+	feedid := feed.ID
+
+	errrr := s.db.UnfollowFeeds(context.Background(), database.UnfollowFeedsParams{
+		FeedID: feedid,
+		UserID: userid,
+	})
+	if errrr != nil {
+		return fmt.Errorf("couldm't unfollow feed")
 	}
 	return nil
 }

@@ -42,6 +42,7 @@ func main() {
 	appState.register("feeds", fetchFeeds)
 	appState.register("follow", addFollow)
 	appState.register("following", getfollwedfeedsby_User)
+	appState.register("unfollow", unfollow)
 
 	params := os.Args
 
